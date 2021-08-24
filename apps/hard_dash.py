@@ -1,6 +1,6 @@
 import dash_table
 import pandas as pd
-from apps.data import main, BENCHMARKS
+from apps.data_handle import main, BENCHMARKS
 import pathlib
 import dash_html_components as html
 
