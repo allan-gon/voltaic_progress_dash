@@ -17,10 +17,10 @@ Im assuming you have git installed on your machine and understand how to use it
 Steps:
 
 1.) Click on the green code button and copy the link in the popup that shows up
-![alt text](/img/step_1.jpg)
+![alt text](/img/step_1.JPG)
 
 2.) Open your command line or powershell and type: `git clone 'the thing you copied'` press enter
-![alt text](/img/step_2.jpg)
+![alt text](/img/step_2.JPG)
     
 3.) Move into the repo by typing `cd voltaic_progress_dash` in the command line
 
@@ -31,10 +31,10 @@ Steps:
 7.) In the ./apps/data_handle.py file change the DIR variable to be the path to your scores for most people this will probably be `C:/Program Files (x86)/Steam/steamapps/common/FPSAimTrainer/FPSAimTrainer/stats`
 
 6.) Type `python index.py` Your screen should now look like this and the app will be running. 
-![alt text](/img/step_6.jpg)
+![alt text](/img/step_6.JPG)
 
 7.) Go to `http://127.0.0.1:8050/` in your browser and you should see this
-![alt text](/img/step_7.jpg)
+![alt text](/img/step_7.JPG)
 
 8.) Click on either Beginner or advanced and you should see the correct table
 ![alt text](/img/step_8.gif)
