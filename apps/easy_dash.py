@@ -7,7 +7,7 @@ import dash_html_components as html
 
 PATH = pathlib.Path(__file__).parent
 
-df, groups = main()
+df, groups = main(easy=False)
 
 table = {
     'Type': [], 'Subtype': [],
@@ -15,14 +15,14 @@ table = {
     'Average Score': [],
 }
 
-ranks = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"]
+ranks = ["Jade", "Master", "Grandmaster", "Nova", "Astra"]
 
-with open("./data/easy_bench.txt", "r") as f:
+with open("./data/hard_bench.txt", "r") as f:
     content = f.readlines()
     for i in range(len(content)):
         table[ranks[i]] = [int(j) for j  in content[i].split(', ')]
 
-for scenario in BENCHMARKS:
+for scenario in [i.strip(" Easy") for i in BENCHMARKS]:
     table['Type'].append(groups.get_group(scenario).scenario_type.iloc[0])
     table['Subtype'].append(groups.get_group(scenario).sub_type.iloc[0])
     table['Scenario'].append(scenario)
@@ -113,110 +113,110 @@ layout = dash_table.DataTable(
         # color of ranks
         {
             'if': {
-                'column_id': 'Bronze',
+                'column_id': 'Jade',
             },
-            'backgroundColor': '#FCE5CD',
+            'backgroundColor': '#CEFDCE',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Silver',
+                'column_id': 'Master',
             },
-            'backgroundColor': '#DCE5EC',
+            'backgroundColor': '#F8C0ED',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Gold',
+                'column_id': 'Grandmaster',
             },
-            'backgroundColor': '#E4DAB0',
+            'backgroundColor': '#FFF1AA',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Platinum',
+                'column_id': 'Nova',
             },
-            'backgroundColor': '#B9EFEA',
+            'backgroundColor': '#C089FF',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Diamond',
+                'column_id': 'Astra',
             },
-            'backgroundColor': '#E7FAFF',
+            'backgroundColor': '#E786B0',
             'textAlign': 'center'
         },
         # color of high score
         {
             'if': {
-                'filter_query': '{High Score} < {Silver}',
+                'filter_query': '{High Score} >= {Jade} && {High Score} < {Master}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#FCE5CD',
+            'backgroundColor': '#CEFDCE',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Silver} && {High Score} < {Gold}',
+                'filter_query': '{High Score} >= {Master} && {High Score} < {Grandmaster}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#DCE5EC',
+            'backgroundColor': '#F8C0ED',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Gold} && {High Score} < {Platinum}',
+                'filter_query': '{High Score} >= {Grandmaster} && {High Score} < {Nova}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#E4DAB0',
+            'backgroundColor': '#FFF1AA',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Platinum} && {High Score} < {Diamond}',
+                'filter_query': '{High Score} >= {Nova} && {High Score} < {Astra}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#B9EFEA',
+            'backgroundColor': '#C089FF',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Diamond}',
+                'filter_query': '{High Score} >= {Astra}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#E7FAFF',
+            'backgroundColor': '#E786B0',
         },
         # color of avg score
         {
             'if': {
-                'filter_query': '{Average Score} < {Silver}',
+                'filter_query': '{Average Score} >= {Jade} && {Average Score} < {Master}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#FCE5CD',
+            'backgroundColor': '#CEFDCE',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Silver} && {Average Score} < {Gold}',
+                'filter_query': '{Average Score} >= {Master} && {Average Score} < {Grandmaster}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#DCE5EC',
+            'backgroundColor': '#F8C0ED',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Gold} && {Average Score} < {Platinum}',
+                'filter_query': '{Average Score} >= {Grandmaster} && {Average Score} < {Nova}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#E4DAB0',
+            'backgroundColor': '#FFF1AA',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Platinum} && {Average Score} < {Diamond}',
+                'filter_query': '{Average Score} >= {Nova} && {Average Score} < {Astra}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#B9EFEA',
+            'backgroundColor': '#C089FF',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Diamond}',
+                'filter_query': '{Average Score} >= {Astra}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#E7FAFF',
+            'backgroundColor': '#E786B0',
         },
         # width of columns
         {
@@ -255,28 +255,28 @@ layout = dash_table.DataTable(
     ],
     style_header_conditional=[
         {
-            'if': {'column_id': 'Bronze'},
-            'backgroundColor': '#FF9900',
+            'if': {'column_id': 'Jade'},
+            'backgroundColor': '#85FA85',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Silver'},
-            'backgroundColor': '#CBD9E6',
+            'if': {'column_id': 'Master'},
+            'backgroundColor': '#EC44CA',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Gold'},
-            'backgroundColor': '#CAB148',
+            'if': {'column_id': 'Grandmaster'},
+            'backgroundColor': '#FFD700',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Platinum'},
-            'backgroundColor': '#2FCFC2',
+            'if': {'column_id': 'Nova'},
+            'backgroundColor': '#7900FF',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Diamond'},
-            'backgroundColor': '#B9F2FF',
+            'if': {'column_id': 'Astra'},
+            'backgroundColor': '#FF2262',
             'textAlign': 'center'
         },
         {
