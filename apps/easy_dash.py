@@ -3,11 +3,15 @@ import pandas as pd
 from apps.data_handle import main, BENCHMARKS
 import pathlib
 import dash_html_components as html
+from dash.dependencies import Input, Output
+import dash_core_components as dcc
+from app import app
+import plotly.express as px
 
 
 PATH = pathlib.Path(__file__).parent
 
-df, groups = main(easy=False)
+df, groups = main()
 
 table = {
     'Type': [], 'Subtype': [],
@@ -15,21 +19,21 @@ table = {
     'Average Score': [],
 }
 
-ranks = ["Jade", "Master", "Grandmaster", "Nova", "Astra"]
+ranks = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"]
 
-with open("./data/hard_bench.txt", "r") as f:
+with open("./data/easy_bench.txt", "r") as f:
     content = f.readlines()
     for i in range(len(content)):
         table[ranks[i]] = [int(j) for j  in content[i].split(', ')]
 
-for scenario in [i.strip(" Easy") for i in BENCHMARKS]:
+for scenario in BENCHMARKS:
     table['Type'].append(groups.get_group(scenario).scenario_type.iloc[0])
     table['Subtype'].append(groups.get_group(scenario).sub_type.iloc[0])
     table['Scenario'].append(scenario)
     table['High Score'].append(round(groups.get_group(scenario).score.max(), 2))
     table['Average Score'].append(round(groups.get_group(scenario).score.mean(), 2))
 
-layout = dash_table.DataTable(
+main_table = dash_table.DataTable(
     id='table',
     columns=[{"name": i, "id": i} for i in table.keys()],
     data=pd.DataFrame.from_dict(table).to_dict('records'), # looks into dixing this, i think it works but is trash!!!
@@ -113,110 +117,110 @@ layout = dash_table.DataTable(
         # color of ranks
         {
             'if': {
-                'column_id': 'Jade',
+                'column_id': 'Bronze',
             },
-            'backgroundColor': '#CEFDCE',
+            'backgroundColor': '#FCE5CD',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Master',
+                'column_id': 'Silver',
             },
-            'backgroundColor': '#F8C0ED',
+            'backgroundColor': '#DCE5EC',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Grandmaster',
+                'column_id': 'Gold',
             },
-            'backgroundColor': '#FFF1AA',
+            'backgroundColor': '#E4DAB0',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Nova',
+                'column_id': 'Platinum',
             },
-            'backgroundColor': '#C089FF',
+            'backgroundColor': '#B9EFEA',
             'textAlign': 'center'
         },
         {
             'if': {
-                'column_id': 'Astra',
+                'column_id': 'Diamond',
             },
-            'backgroundColor': '#E786B0',
+            'backgroundColor': '#E7FAFF',
             'textAlign': 'center'
         },
         # color of high score
         {
             'if': {
-                'filter_query': '{High Score} >= {Jade} && {High Score} < {Master}',
+                'filter_query': '{High Score} < {Silver}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#CEFDCE',
+            'backgroundColor': '#FCE5CD',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Master} && {High Score} < {Grandmaster}',
+                'filter_query': '{High Score} >= {Silver} && {High Score} < {Gold}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#F8C0ED',
+            'backgroundColor': '#DCE5EC',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Grandmaster} && {High Score} < {Nova}',
+                'filter_query': '{High Score} >= {Gold} && {High Score} < {Platinum}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#FFF1AA',
+            'backgroundColor': '#E4DAB0',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Nova} && {High Score} < {Astra}',
+                'filter_query': '{High Score} >= {Platinum} && {High Score} < {Diamond}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#C089FF',
+            'backgroundColor': '#B9EFEA',
         },
         {
             'if': {
-                'filter_query': '{High Score} >= {Astra}',
+                'filter_query': '{High Score} >= {Diamond}',
                 'column_id': 'High Score'
             },
-            'backgroundColor': '#E786B0',
+            'backgroundColor': '#E7FAFF',
         },
         # color of avg score
         {
             'if': {
-                'filter_query': '{Average Score} >= {Jade} && {Average Score} < {Master}',
+                'filter_query': '{Average Score} < {Silver}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#CEFDCE',
+            'backgroundColor': '#FCE5CD',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Master} && {Average Score} < {Grandmaster}',
+                'filter_query': '{Average Score} >= {Silver} && {Average Score} < {Gold}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#F8C0ED',
+            'backgroundColor': '#DCE5EC',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Grandmaster} && {Average Score} < {Nova}',
+                'filter_query': '{Average Score} >= {Gold} && {Average Score} < {Platinum}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#FFF1AA',
+            'backgroundColor': '#E4DAB0',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Nova} && {Average Score} < {Astra}',
+                'filter_query': '{Average Score} >= {Platinum} && {Average Score} < {Diamond}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#C089FF',
+            'backgroundColor': '#B9EFEA',
         },
         {
             'if': {
-                'filter_query': '{Average Score} >= {Astra}',
+                'filter_query': '{Average Score} >= {Diamond}',
                 'column_id': 'Average Score'
             },
-            'backgroundColor': '#E786B0',
+            'backgroundColor': '#E7FAFF',
         },
         # width of columns
         {
@@ -255,28 +259,28 @@ layout = dash_table.DataTable(
     ],
     style_header_conditional=[
         {
-            'if': {'column_id': 'Jade'},
-            'backgroundColor': '#85FA85',
+            'if': {'column_id': 'Bronze'},
+            'backgroundColor': '#FF9900',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Master'},
-            'backgroundColor': '#EC44CA',
+            'if': {'column_id': 'Silver'},
+            'backgroundColor': '#CBD9E6',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Grandmaster'},
-            'backgroundColor': '#FFD700',
+            'if': {'column_id': 'Gold'},
+            'backgroundColor': '#CAB148',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Nova'},
-            'backgroundColor': '#7900FF',
+            'if': {'column_id': 'Platinum'},
+            'backgroundColor': '#2FCFC2',
             'textAlign': 'center'
         },
         {
-            'if': {'column_id': 'Astra'},
-            'backgroundColor': '#FF2262',
+            'if': {'column_id': 'Diamond'},
+            'backgroundColor': '#B9F2FF',
             'textAlign': 'center'
         },
         {
@@ -287,3 +291,38 @@ layout = dash_table.DataTable(
         },
     ]
 )
+
+drop = dcc.Dropdown(
+    id='scenario_drop',
+    options = [{'label': i, 'value': i} for i in BENCHMARKS],
+    value=None
+)
+
+graph = dcc.Graph(
+    id='graph',
+    figure={}
+)
+
+
+@app.callback(
+    Output(component_id='graph', component_property='figure'),
+    Input(component_id='scenario_drop', component_property='value')
+)
+def create_graph(val):
+    if val:
+        fig = px.line(data_frame=groups.get_group(val).sort_values(by='date'), x='date',y='score')
+        return fig
+    else:
+        return {}
+
+
+layout = html.Div(
+    id='temp',
+    children=[
+        main_table, html.Br(), html.Br(),
+        drop, graph,
+    ]
+)
+
+# TODO: Find a way to fix the fucked up lines in the graph
+# they exist because mutiple plays of a scenario are within a short time of one another
