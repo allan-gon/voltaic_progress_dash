@@ -33,7 +33,7 @@ for scenario in BENCHMARKS:
     table['High Score'].append(round(groups.get_group(scenario).score.max(), 2))
     table['Average Score'].append(round(groups.get_group(scenario).score.mean(), 2))
 
-main_table = dash_table.DataTable(
+layout = dash_table.DataTable(
     id='table',
     columns=[{"name": i, "id": i} for i in table.keys()],
     data=pd.DataFrame.from_dict(table).to_dict('records'), # looks into dixing this, i think it works but is trash!!!
@@ -291,38 +291,3 @@ main_table = dash_table.DataTable(
         },
     ]
 )
-
-drop = dcc.Dropdown(
-    id='scenario_drop',
-    options = [{'label': i, 'value': i} for i in BENCHMARKS],
-    value=None
-)
-
-graph = dcc.Graph(
-    id='graph',
-    figure={}
-)
-
-
-@app.callback(
-    Output(component_id='graph', component_property='figure'),
-    Input(component_id='scenario_drop', component_property='value')
-)
-def create_graph(val):
-    if val:
-        fig = px.line(data_frame=groups.get_group(val).sort_values(by='date'), x='date',y='score')
-        return fig
-    else:
-        return {}
-
-
-layout = html.Div(
-    id='temp',
-    children=[
-        main_table, html.Br(), html.Br(),
-        drop, graph,
-    ]
-)
-
-# TODO: Find a way to fix the fucked up lines in the graph
-# they exist because mutiple plays of a scenario are within a short time of one another
