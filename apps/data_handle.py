@@ -38,7 +38,7 @@ def collect_data(easy=True) -> pd.DataFrame:
             # if the scenario is one of the voltaic benchmarks
             if file.startswith(f'{name} - Challenge'):
                 # find the name, score, date and save them
-                date = file.split()[-2]
+                date = file.split()[-2].split('-')[0] # the split on hyphern was added because the graph can't use that granular of info
                 with open(f"{DIR}\\{file}", "r") as f:
                     score = re.search("Score:,(.*)\n", f.read()).group().strip().split(',')[-1]
                     # here im just making sure the re result is a number
@@ -77,7 +77,7 @@ def collect_data(easy=True) -> pd.DataFrame:
 def play_with_df(df: pd.DataFrame) -> tuple:
     # enforce types because there will be data manipulation and no more data collection
     df.score = df.score.astype('float')
-    df.date = pd.to_datetime(df.date, format=r"%Y.%m.%d-%H.%M.%S")
+    df.date = pd.to_datetime(df.date, format=r"%Y.%m.%d") # -%H.%M.%S") was in format before. removed because too granular 
 
     groups = df.groupby("scenario_name")
     # for scenario in df.scenario_name.unique():

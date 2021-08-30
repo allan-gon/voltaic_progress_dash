@@ -2,15 +2,13 @@ import pandas as pd
 from apps.data_handle import main, BENCHMARKS
 import pathlib
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 from app import app
 import plotly.express as px
 
 
 PATH = pathlib.Path(__file__).parent
-
-df, groups = main()
 
 choice = dcc.RadioItems(
     id='choice',
@@ -49,18 +47,33 @@ def gen_drop(val):
 
 @app.callback(
     Output(component_id='graph', component_property='figure'),
-    Input(component_id='scenario_drop', component_property='value')
+    Input(component_id='scenario_drop', component_property='value'),
+    state = State(component_id='choice', component_property='value')
 )
-def create_graph(val):
-    if val:
+def create_graph(scenario, dropdown):
+    if dropdown == 'easy':
+        df, groups = main()
+    else:
+        df, groups = main(easy=False)
+
+    if scenario in df.scenario_name.unique():
+        temp = groups.get_group(scenario).sort_values(by='date').groupby('date')
+        x = []
+        y = []
+        for name, group in temp:
+            x.append(name)
+            y.append(group.score.mean())
         fig = px.line(
-            data_frame=groups.get_group(val).sort_values(by='date'),
-            x='date',y='score', title=val
+            x=x,y=y, title='Avg Score by Day'
         )
         fig.update_traces(mode='lines+markers')
-        return fig
+        fig.update_layout(
+            xaxis_title='Day',
+            yaxis_title='Score'
+        )
     else:
-        return {}
+        fig = px.line(title='YOU HAVEN"T PLAYED THIS SCENARIOS YET!')
+    return fig
 
 
 layout = html.Div(
@@ -69,6 +82,3 @@ layout = html.Div(
         choice, drop, graph,
     ]
 )
-
-# TODO: Find a way to fix the fucked up lines in the graph
-# they exist because mutiple plays of a scenario are within a short time of one another
