@@ -6,10 +6,9 @@ This is essentially the voltaic progress sheet but implemented in Python's Dash 
     - I just wanted to see if I could do it and wanted to better learn the dash data table so this was a learning experience
 # Is this affiliated with voltaic?
 No this is a solo endeavor and not meant to in anyway negatively affect voltaic I'm simply a fan making a spin off project
-# 'Bugs'
-Calling it 'bugs' because it's not like the code is acting up just i was too lazy to implement a solution.
+# Bugs
+At the moment I'm the lone user and am unaware of any bugs
 
-    - If there isn't atleast one file of each scenario in the benchmarks (this includes easy and hard benchmarks) then it breaks easy fix would be a condition in the apps/data_handler.py play_with_df function. What you'd do is check what scenarios are missing and create 1 dummy row for it where score is 0
 # How to use
 ### With Pipenv
 Im assuming you have git installed on your machine and understand how to use it
