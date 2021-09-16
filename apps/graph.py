@@ -50,9 +50,9 @@ def gen_drop(val):
 )
 def create_graph(scenario, dropdown):
     if dropdown == 'easy':
-        df, groups = main()
+        df, groups = main(m_easy=True)
     else:
-        df, groups = main(easy=False)
+        df, groups = main(m_easy=False)
 
     if scenario in df.scenario_name.unique():
         temp = groups.get_group(scenario).sort_values(by='date').groupby('date')
