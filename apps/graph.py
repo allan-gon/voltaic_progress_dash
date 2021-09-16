@@ -1,11 +1,9 @@
-import pandas as pd
-from apps.data_handle import main, BENCHMARKS
 import pathlib
-import dash_html_components as html
+from dash import dcc, html
 from dash.dependencies import Input, Output, State
-import dash_core_components as dcc
-from app import app
 import plotly.express as px
+from apps.wrangle import main, SCENARIOS
+from app import app
 
 
 PATH = pathlib.Path(__file__).parent
@@ -38,9 +36,9 @@ graph = dcc.Graph(
 )
 def gen_drop(val):
     if val == 'easy':
-        return [{'label': i, 'value': i} for i in BENCHMARKS]
+        return [{'label': i, 'value': i} for i in SCENARIOS['Easy']]
     elif val == 'hard':
-        bench = [i.strip(" Easy") for i in BENCHMARKS]
+        bench = [i.strip(" Easy") for i in SCENARIOS['Hard']]
         return [{'label': i, 'value': i} for i in bench]
     return []
 
@@ -48,7 +46,7 @@ def gen_drop(val):
 @app.callback(
     Output(component_id='graph', component_property='figure'),
     Input(component_id='scenario_drop', component_property='value'),
-    state = State(component_id='choice', component_property='value')
+    State(component_id='choice', component_property='value')
 )
 def create_graph(scenario, dropdown):
     if dropdown == 'easy':

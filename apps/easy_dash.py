@@ -1,12 +1,7 @@
-import dash_table
+from dash.dash_table import DataTable
 import pandas as pd
-from apps.data_handle import main, BENCHMARKS
+from apps.wrangle import main, SCENARIOS
 import pathlib
-import dash_html_components as html
-from dash.dependencies import Input, Output
-import dash_core_components as dcc
-from app import app
-import plotly.express as px
 
 
 PATH = pathlib.Path(__file__).parent
@@ -26,14 +21,14 @@ with open("./data/easy_bench.txt", "r") as f:
     for i in range(len(content)):
         table[ranks[i]] = [int(j) for j  in content[i].split(', ')]
 
-for scenario in BENCHMARKS:
+for scenario in SCENARIOS['Easy']:
     table['Type'].append(groups.get_group(scenario).scenario_type.iloc[0])
     table['Subtype'].append(groups.get_group(scenario).sub_type.iloc[0])
     table['Scenario'].append(scenario)
     table['High Score'].append(round(groups.get_group(scenario).score.max(), 2))
     table['Average Score'].append(round(groups.get_group(scenario).score.mean(), 2))
 
-layout = dash_table.DataTable(
+layout = DataTable(
     id='table',
     columns=[{"name": i, "id": i} for i in table.keys()],
     data=pd.DataFrame.from_dict(table).to_dict('records'), # looks into dixing this, i think it works but is trash!!!

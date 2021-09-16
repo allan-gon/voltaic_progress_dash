@@ -1,6 +1,6 @@
-import dash_table
+from dash.dash_table import DataTable
 import pandas as pd
-from apps.data_handle import main, BENCHMARKS
+from apps.wrangle import main, SCENARIOS
 import pathlib
 
 
@@ -14,15 +14,14 @@ table = {
     'Average Score': [],
 }
 
-bench = [i.strip(" Easy") for i in BENCHMARKS]
-ranks = ["Jade", "Master", "Grandmaster", "Nova", "Astra"]
+ranks = ['Jade', 'Master', 'Grandmaster', 'Nova', 'Astra']
 
-with open("./data/hard_bench.txt", "r") as f:
+with open('./data/hard_bench.txt', 'r') as f:
     content = f.readlines()
     for i in range(len(content)):
         table[ranks[i]] = [int(j) for j  in content[i].split(', ')]
 
-for scenario in [i for i in bench]:
+for scenario in SCENARIOS['Hard']:
     table['Type'].append(groups.get_group(scenario).scenario_type.iloc[0])
     table['Subtype'].append(groups.get_group(scenario).sub_type.iloc[0])
     table['Scenario'].append(scenario)
@@ -30,9 +29,9 @@ for scenario in [i for i in bench]:
     table['Average Score'].append(round(groups.get_group(scenario).score.mean(), 2))
 
 # main_table
-layout = dash_table.DataTable(
+layout = DataTable(
     id='table',
-    columns=[{"name": i, "id": i} for i in table.keys()],
+    columns=[{'name': i, 'id': i} for i in table.keys()],
     data=pd.DataFrame.from_dict(table).to_dict('records'), # looks into dixing this, i think it works but is trash!!!
     style_cell={
         'textAlign': 'left', 'whiteSpace': 'normal',
