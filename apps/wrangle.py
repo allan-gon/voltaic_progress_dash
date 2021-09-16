@@ -28,7 +28,7 @@ SCENARIOS = {
     }
 }
 
-
+# r'D:\SteamLibrary\steamapps\common\FPSAimTrainer\FPSAimTrainer\stats'
 def collect_data(easy: bool = True, folder: str = r'D:\SteamLibrary\steamapps\common\FPSAimTrainer\FPSAimTrainer\stats', benchmarks: dict = SCENARIOS) -> pd.DataFrame:
     if easy:
         bench = benchmarks['Easy']

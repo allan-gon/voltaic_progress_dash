@@ -146,7 +146,7 @@ def create_table(is_easy: bool = True) -> DataTable:
                 # color of high score
                 {
                     'if': {
-                        'filter_query': '{High Score} < {Silver}',
+                        'filter_query': '{High Score} >= {Bronze} && {High Score} < {Silver}',
                         'column_id': 'High Score'
                     },
                     'backgroundColor': '#FCE5CD',
@@ -182,7 +182,7 @@ def create_table(is_easy: bool = True) -> DataTable:
                 # color of avg score
                 {
                     'if': {
-                        'filter_query': '{Average Score} < {Silver}',
+                        'filter_query': '{Average Score} >= {Bronze} && {Average Score} < {Silver}',
                         'column_id': 'Average Score'
                     },
                     'backgroundColor': '#FCE5CD',
