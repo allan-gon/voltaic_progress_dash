@@ -6,13 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+dash = "==2.0.0"
 pandas = "*"
-numpy = "*"
-matplotlib = "*"
-dash = "*"
-dash-bootstrap-components = "*"
-dash-html-components = "*"
-dash-table = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,7 +1,6 @@
 from app import app # main app
-from apps import easy_dash, hard_dash, graph # two pages
-import dash_html_components as html
-import dash_core_components as dcc
+from apps import easy_dash , hard_dash, graph # all the pages
+from dash import dcc, html
 from dash.dependencies import Input, Output
 
 
