@@ -1,14 +1,14 @@
-from app import app # main app
-from apps import easy_dash , hard_dash, graph # all the pages
+from app import app
+from apps import table, graph
 from dash import dcc, html
 from dash.dependencies import Input, Output
+
 
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div([
-        dcc.Link('Beginner|', href='/apps/easy_dash'),
-        dcc.Link('Advanced|', href='/apps/hard_dash'),
+        dcc.Link('Table|', href='/apps/table'),
         dcc.Link('Graph', href='/apps/graph')
     ], className="row"),
     html.Div(id='page-content', children=[])
@@ -18,10 +18,8 @@ app.layout = html.Div([
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
-    if pathname == '/apps/easy_dash':
-        return easy_dash.layout
-    elif pathname == '/apps/hard_dash':
-        return hard_dash.layout
+    if pathname == '/apps/table':
+        return table.layout
     elif pathname == '/apps/graph':
         return graph.layout
     else:

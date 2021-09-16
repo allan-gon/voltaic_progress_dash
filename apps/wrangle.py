@@ -3,7 +3,6 @@ from os import listdir
 import pandas as pd
 
 
-DIR = r'D:\SteamLibrary\steamapps\common\FPSAimTrainer\FPSAimTrainer\stats'
 SCENARIOS = {
     'Easy': {
         'Pasu Voltaic Easy': ['Clicking', 'Dynamic', 0], 'B180 Voltaic Easy': ['Clicking', 'Dynamic', 0],
@@ -30,7 +29,7 @@ SCENARIOS = {
 }
 
 
-def collect_data(easy: bool = True, benchmarks = SCENARIOS) -> pd.DataFrame:
+def collect_data(easy: bool = True, folder: str = r'D:\SteamLibrary\steamapps\common\FPSAimTrainer\FPSAimTrainer\stats', benchmarks: dict = SCENARIOS) -> pd.DataFrame:
     if easy:
         bench = benchmarks['Easy']
     else:
@@ -42,11 +41,11 @@ def collect_data(easy: bool = True, benchmarks = SCENARIOS) -> pd.DataFrame:
     scenario_type = []
     sub_type = []
 
-    for file_name in listdir(DIR):
+    for file_name in listdir(folder):
         name = file_name.split(' - Challenge')[0]
         if name in bench:
             # get the score
-            with open(f'{DIR}/{file_name}', 'r') as f:
+            with open(f'{folder}/{file_name}', 'r') as f:
                 score = search('Score:,(.*)\n', f.read()).group().strip().split(',')[-1]
             date = file_name.split()[-2].split('-')[0]
             if score.replace('.','',1).isdigit():
@@ -56,8 +55,9 @@ def collect_data(easy: bool = True, benchmarks = SCENARIOS) -> pd.DataFrame:
                 scenario_type.append(bench[name][0])
                 sub_type.append(bench[name][1])
                 bench[name][-1] += 1
+
     for scenario in bench:
-        if not bench[scenario][-1]:
+        if bench[scenario][-1] == 0:
             scenario_names.append(scenario)
             accompaning_score.append(0)
             dates.append('2021.9.15') # random day doesn't really matter i just need placeholder value
@@ -79,8 +79,9 @@ def clean_group(df: pd.DataFrame) -> tuple:
     return df, groups
 
 
-def main(easy=True):
-    return clean_group(collect_data(easy))
+def main(m_easy=True):
+    return clean_group(collect_data(easy=m_easy))
+
 
 if __name__ == '__main__':
     df, groups = main()
