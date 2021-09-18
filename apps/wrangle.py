@@ -70,19 +70,14 @@ def collect_data(easy: bool = True, folder: str = r'D:\SteamLibrary\steamapps\co
     })
 
 
-def clean_group(df: pd.DataFrame) -> tuple:
+def clean_group(df: pd.DataFrame) -> pd.Grouper:
     # enforce types because there will be data manipulation and no more data collection
     df.score = df.score.astype('float')
     df.date = pd.to_datetime(df.date, format=r'%Y.%m.%d')
 
     groups = df.groupby('scenario_name')
-    return df, groups
+    return groups
 
 
 def main(m_easy=True):
     return clean_group(collect_data(easy=m_easy))
-
-
-if __name__ == '__main__':
-    df, groups = main()
-    print(df.head())

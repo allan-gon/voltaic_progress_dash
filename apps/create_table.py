@@ -10,7 +10,7 @@ def create_table(is_easy: bool = True) -> DataTable:
         'Average Score': [],
     }
     if is_easy:
-        _, groups = main(m_easy=is_easy)
+        groups = main(m_easy=is_easy)
         
         ranks = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"]
 
@@ -286,7 +286,7 @@ def create_table(is_easy: bool = True) -> DataTable:
         )
         return data_table
     else:
-        _, groups = main(m_easy=is_easy)
+        groups = main(m_easy=is_easy)
 
         table = {
             'Type': [], 'Subtype': [],

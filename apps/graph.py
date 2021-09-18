@@ -11,8 +11,8 @@ PATH = pathlib.Path(__file__).parent
 choice = dcc.RadioItems(
     id='choice',
     options=[
-        {'label': 'Easy', 'value': 'easy'},
-        {'label': 'Hard', 'value': 'hard'}
+        {'label': 'Easy', 'value': 'Easy'},
+        {'label': 'Hard', 'value': 'Hard'}
     ],
     value=None,
     labelStyle={'display': 'inline-block'}
@@ -35,9 +35,9 @@ graph = dcc.Graph(
     Input(component_id='choice', component_property='value'),
 )
 def gen_drop(val):
-    if val == 'easy':
+    if val == 'Easy':
         return [{'label': i, 'value': i} for i in SCENARIOS['Easy']]
-    elif val == 'hard':
+    elif val == 'Hard':
         bench = [i.strip(" Easy") for i in SCENARIOS['Hard']]
         return [{'label': i, 'value': i} for i in bench]
     return []
@@ -49,12 +49,12 @@ def gen_drop(val):
     State(component_id='choice', component_property='value')
 )
 def create_graph(scenario, dropdown):
-    if dropdown == 'easy':
-        df, groups = main(m_easy=True)
+    if dropdown == 'Easy':
+        groups = main(m_easy=True)
     else:
-        df, groups = main(m_easy=False)
+        groups = main(m_easy=False)
 
-    if scenario in df.scenario_name.unique():
+    if scenario in SCENARIOS[dropdown]:
         temp = groups.get_group(scenario).sort_values(by='date').groupby('date')
         x = []
         y = []
