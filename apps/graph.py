@@ -8,6 +8,8 @@ from app import app
 
 PATH = pathlib.Path(__file__).parent
 
+easy, hard = main(True), main(False)
+
 choice = dcc.RadioItems(
     id='choice',
     options=[
@@ -49,10 +51,7 @@ def gen_drop(val):
     State(component_id='choice', component_property='value')
 )
 def create_graph(scenario, dropdown):
-    if dropdown == 'Easy':
-        groups = main(m_easy=True)
-    else:
-        groups = main(m_easy=False)
+    groups = easy if dropdown == "Easy" else hard
 
     if scenario in SCENARIOS[dropdown]:
         temp = groups.get_group(scenario).sort_values(by='date').groupby('date')

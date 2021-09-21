@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 dash = "==2.0.0"
 pandas = "*"
+selenium = "==3.141.0"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
