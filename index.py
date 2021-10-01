@@ -26,5 +26,9 @@ def display_page(pathname):
         return "404 Page Error! Please choose a link"
 
 
+def main():
+    app.run_server(host='0.0.0.0', port=8080, debug=False, use_reloader=False)
+
+
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    main()

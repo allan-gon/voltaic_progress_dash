@@ -39,4 +39,4 @@ Steps:
 ![alt text](/img/step_8.gif)
 ### Without Pipenv
 
-TODO: Make this more straight forward
+TODO: Update this, is depricated

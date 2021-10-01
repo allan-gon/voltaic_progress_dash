@@ -1,5 +1,5 @@
 import dash
 
-app = dash.Dash(__name__, prevent_initial_callbacks=True, )
+app = dash.Dash(__name__)
 
 server = app.server

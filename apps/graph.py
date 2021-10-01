@@ -8,7 +8,7 @@ from app import app
 
 PATH = pathlib.Path(__file__).parent
 
-easy, hard = main(True), main(False)
+easy, hard = main()
 
 choice = dcc.RadioItems(
     id='choice',
@@ -16,14 +16,14 @@ choice = dcc.RadioItems(
         {'label': 'Easy', 'value': 'Easy'},
         {'label': 'Hard', 'value': 'Hard'}
     ],
-    value=None,
+    value='Easy',
     labelStyle={'display': 'inline-block'}
 )
 
 drop = dcc.Dropdown(
     id='scenario_drop',
     options = [],
-    value=None
+    value='1w4ts Voltaic'
 )
 
 graph = dcc.Graph(
@@ -68,8 +68,6 @@ def create_graph(scenario, dropdown):
             xaxis_title='Day',
             yaxis_title='Score'
         )
-    else:
-        fig = px.line(title='YOU HAVEN"T PLAYED THIS SCENARIOS YET!')
     return fig
 
 
@@ -79,3 +77,4 @@ layout = html.Div(
         choice, drop, graph,
     ]
 )
+# slow because sort

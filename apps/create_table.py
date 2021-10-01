@@ -3,6 +3,9 @@ import pandas as pd
 from apps.wrangle import main, SCENARIOS
 
 
+easy, hard = main()
+
+
 def create_table(is_easy: bool = True) -> DataTable:
     table = {
         'Type': [], 'Subtype': [],
@@ -10,21 +13,19 @@ def create_table(is_easy: bool = True) -> DataTable:
         'Average Score': [],
     }
     if is_easy:
-        groups = main(m_easy=is_easy)
-        
         ranks = ["Bronze", "Silver", "Gold", "Platinum", "Diamond"]
 
-        with open("./data/easy_bench.txt", "r") as f:
+        with open(f"./data/easy_bench.txt", "r") as f:
             content = f.readlines()
             for i in range(len(content)):
                 table[ranks[i]] = [int(j) for j  in content[i].split(', ')]
 
         for scenario in SCENARIOS['Easy']:
-            table['Type'].append(groups.get_group(scenario).scenario_type.iloc[0])
-            table['Subtype'].append(groups.get_group(scenario).sub_type.iloc[0])
+            table['Type'].append(easy.get_group(scenario).scenario_type.iloc[0])
+            table['Subtype'].append(easy.get_group(scenario).sub_type.iloc[0])
             table['Scenario'].append(scenario)
-            table['High Score'].append(round(groups.get_group(scenario).score.max(), 2))
-            table['Average Score'].append(round(groups.get_group(scenario).score.mean(), 2))
+            table['High Score'].append(round(easy.get_group(scenario).score.max(), 2))
+            table['Average Score'].append(round(easy.get_group(scenario).score.mean(), 2))
 
         data_table = DataTable(
             id='table',
@@ -286,8 +287,6 @@ def create_table(is_easy: bool = True) -> DataTable:
         )
         return data_table
     else:
-        groups = main(m_easy=is_easy)
-
         table = {
             'Type': [], 'Subtype': [],
             'Scenario': [], 'High Score': [],
@@ -296,17 +295,17 @@ def create_table(is_easy: bool = True) -> DataTable:
 
         ranks = ['Jade', 'Master', 'Grandmaster', 'Nova', 'Astra']
 
-        with open('./data/hard_bench.txt', 'r') as f:
+        with open(f'./data/hard_bench.txt', 'r') as f:
             content = f.readlines()
             for i in range(len(content)):
                 table[ranks[i]] = [int(j) for j  in content[i].split(', ')]
 
         for scenario in SCENARIOS['Hard']:
-            table['Type'].append(groups.get_group(scenario).scenario_type.iloc[0])
-            table['Subtype'].append(groups.get_group(scenario).sub_type.iloc[0])
+            table['Type'].append(hard.get_group(scenario).scenario_type.iloc[0])
+            table['Subtype'].append(hard.get_group(scenario).sub_type.iloc[0])
             table['Scenario'].append(scenario)
-            table['High Score'].append(round(groups.get_group(scenario).score.max(), 2))
-            table['Average Score'].append(round(groups.get_group(scenario).score.mean(), 2))
+            table['High Score'].append(round(hard.get_group(scenario).score.max(), 2))
+            table['Average Score'].append(round(hard.get_group(scenario).score.mean(), 2))
 
         data_table = DataTable(
             id='table',

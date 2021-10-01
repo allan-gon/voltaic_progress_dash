@@ -13,6 +13,7 @@ select_table = dcc.RadioItems(
         {'label': 'Easy', 'value': 'Easy'},
         {'label': 'Hard', 'value': 'Hard'},
     ],
+    value='Easy',
 )
 
 layout = html.Div(
@@ -24,7 +25,6 @@ layout = html.Div(
 @app.callback(
     Output(component_id='layout', component_property='children'),
     Input(component_id='select_table', component_property='value'),
-    prevent_initial_call=True
 )
 def add_graph(value):
     if value == 'Easy':
