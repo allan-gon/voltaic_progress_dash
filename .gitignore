@@ -1,3 +1,5 @@
 /build/*
 /dist/*
+chromedriver.exe
+main.py
 main.spec
