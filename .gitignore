@@ -1,4 +1,3 @@
 ./build/*
 ./dist/*
-chromedriver.exe
 main.spec
