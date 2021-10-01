@@ -9,9 +9,10 @@ No this is a solo endeavor and not meant to in anyway negatively affect voltaic 
 # Bugs
 At the moment I'm the lone user and am unaware of any bugs
 
+# Assumptions for use
+Im assuming you have git installed on your machine and python 3.8
+
 # How to use
-### With Pipenv
-Im assuming you have git installed on your machine and understand how to use it
 
 Steps:
 
@@ -23,11 +24,9 @@ Steps:
     
 3.) Move into the repo by typing `cd voltaic_progress_dash` in the command line
 
-4.) Type `pipenv shell --python 3.7`
+4.) Type `pipenv shell --python 3.8`
 
 5.) Type `pipenv update`
-
-7.) In the ./apps/data_handle.py file change the DIR variable to be the path to your scores for most people this will probably be `C:/Program Files (x86)/Steam/steamapps/common/FPSAimTrainer/FPSAimTrainer/stats`
 
 6.) Type `python index.py` Your screen should now look like this and the app will be running. 
 ![alt text](/img/step_6.JPG)
@@ -39,4 +38,14 @@ Steps:
 ![alt text](/img/step_8.gif)
 ### Without Pipenv
 
-TODO: Update this, is depricated
+Steps:
+
+1.) Go to https://www.dropbox.com/s/87571gmupzf3qrj/main.zip?dl=0
+
+2.) Download the zip
+
+3.) Unzip it
+
+4.) Go into the main folder and run volt_dash.exe
+
+At this point you should see a command line and chrome should have force itself open. If everythong worked then the chrome tab should look like step 8
